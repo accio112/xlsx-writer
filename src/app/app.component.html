@@ -1,5 +1,26 @@
-<div>
-  <button id="downloadxlxs" (click)="download()"> Download Sample1
-    <div appXlsxWriter *ngIf="enableDownload"></div>
-  </button>
+<div class="container">
+  <div class="jumbotron">
+    <h1>Welcome</h1>
+    <h2>Xlsx Writer Demo</h2>
+  </div>
+
+
+  <div class="jumbotron">
+
+      <button type="button" class="btn btn-primary btn-lg" (click)="download1()" style="margin-right: 16px" > Download Sample 1
+        <div appXlsxWriter [exceldata]="downloadData1" *ngIf="enableDownload1"></div>
+      </button>
+    
+      <button type="button" class="btn btn-primary btn-lg" (click)="download2()" style="margin-right: 16px" > Download Sample 2
+        <div appXlsxWriter [exceldata]="downloadData2" *ngIf="enableDownload2"></div>
+      </button>
+      
+      <button  type="button" class="btn btn-primary btn-lg" (click)="download3()" style="margin-right: 16px" > Download Sample 3
+        <div appXlsxWriter [exceldata]="downloadData3" *ngIf="enableDownload3"></div>
+      </button>
+
+      <button  type="button" class="btn btn-primary btn-lg" (click)="download4()" > Download Sample 4
+        <div appXlsxWriter [exceldata]="downloadData4" *ngIf="enableDownload4"></div>
+      </button>
+  </div>
 </div>

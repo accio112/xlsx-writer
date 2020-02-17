@@ -31,13 +31,17 @@
                     "name": "Arial",
                     "size": "20",
                     "bold": "true",
-                    "underline": "true"
+                    "underline": "true",
+                    "alignment":{
+                        "vertical":"top",
+                        "horizontal" : "right"
+                    }
                 }
             }
         ]
     },
     "tables": [
-        {
+        {   
             "headers": {
                 "data": [
                     {

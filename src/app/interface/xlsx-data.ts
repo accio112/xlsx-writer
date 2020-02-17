@@ -33,7 +33,7 @@ interface table{
     rowsData: Data[][];
 }
 export interface XlsxData {
-    worksheetName: String;
+    worksheetName: any;
     image?: Fields;
     title?: Fields;
     tables?: table[];

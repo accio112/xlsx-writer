@@ -1,16 +1,17 @@
 declare var require: any
 var _ = require('lodash');
-import { Directive } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { Workbook } from 'exceljs';
 import * as filesaver from 'file-saver';
 import { DatePipe } from '@angular/common';
-import * as exceldata from './test-data/test1.json';
+// import * as exceldata from './test-data/test1.json';
 import {XlsxData} from './interface/xlsx-data';
 const CSV_TYPE = 'application/vnd.ms-excel';
 const CSV_EXTENSION = '.xlsx';
 
 const defaults = {
   "worksheetName": null,
+  "columnWidth": 20,
   "image": null,
   "title": null,
   "tables": null
@@ -19,16 +20,16 @@ const defaults = {
   selector: '[appXlsxWriter]'
 })
 export class XlsxWriterDirective {
+  @Input() exceldata: object;
 
   constructor(private datePipe: DatePipe) { }
   ngOnInit(){
     this.generateExcel();
   }
   public generateExcel() {
-   
-    let data  = <XlsxData> exceldata;
-    let xlxdata = {...defaults, ...data['default']};
-    console.log('theData', xlxdata);
+    let data  = <XlsxData> this.exceldata;
+    let xlxdata = {...defaults, ...data};
+    
     const workbook = new Workbook();
     //worksheetName
     const worksheetName = this.getWorksheetName(xlxdata.worksheetName);
@@ -70,7 +71,7 @@ export class XlsxWriterDirective {
 
     //column width
     worksheet.columns.forEach(column => {
-      column.width = 20;
+      column.width = xlxdata.columnWidth;
     });
 
     //save
@@ -117,6 +118,7 @@ export class XlsxWriterDirective {
 
           if (_.includes(keys, "name"))
             worksheet.getCell(start).value = data['name'];
+          
           worksheet.getCell(start).alignment = { horizontal: 'center' };
 
           if (_.includes(keys, "style")) {
@@ -124,18 +126,25 @@ export class XlsxWriterDirective {
               let cellProperties = {};
               let fontProperties = {};
               _.forEach(data['style'], (value, key) => {
+                //cell
                 if (key === "border") {
                   if (value === "true") {
                     const a = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
                     worksheet.getCell(start).border = a;
                   }
                 }
+                if (key ==="alignment"){
+                    console.log('alignment', value.vertical, value.horizontal);
+                    worksheet.getCell(start).alignment = {vertical: value.vertical , horizontal: value.horizontal}
+                }
+                
                 else if (key === "bgColor" || key === "fgColor") {
                   let color = {
                     'argb': value
                   };
                   cellProperties[key] = color;
                 }
+                //font
                 else {
                   if (key === "color") {
                     let color = {
